@@ -1,0 +1,17 @@
+.dark {
+    background-color: rgba(17, 17, 17, 0.954);
+    width: 12.5%;
+    height: 12.5%;
+}
+.light {
+    background-color: rgb(245, 244, 244);
+    width: 12.5%;
+    height: 12.5%;
+}
+.chessboard {
+    padding-top: 5vh;
+    margin-left: auto;
+    margin-right: auto;
+    width: 75vh;
+    height: 75vh;
+}
