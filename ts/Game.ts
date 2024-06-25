@@ -2,15 +2,18 @@ class Game {
     private board: Square[][] = [];
     private white: Player;
     private black: Player;
+    private turn: Color;
     private static instance: Game;
     public static create(white: Player, black: Player) {
         this.instance = new Game(white, black);
     }
     public static getInstance(): Game {
-        if(Game.instance == null) {
+        if(Game.instance === undefined) {
             throw new Error("You need to initialize the Game instance first!");
         }
-        return this.instance;
+        else {
+            return this.instance;
+        }
     }
     private constructor(white: Player, black: Player) {
         this.white = white;
@@ -26,5 +29,6 @@ class Game {
     }
     public start(): void {
         console.log("Game begun");
+        this.turn = Color.WHITE;
     }
 }
