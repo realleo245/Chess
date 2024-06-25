@@ -1,5 +1,5 @@
 .dark {
-    background-color: rgba(17, 17, 17, 0.954);
+    background-color: rgba(103, 101, 101, 0.953);
     width: 12.5%;
     height: 12.5%;
 }
@@ -14,4 +14,34 @@
     margin-right: auto;
     width: 75vh;
     height: 75vh;
+}
+.rook {
+    /* yes xxx-large actually exists, despite VS Code not knowing what it is*/
+    font-size: xxx-large;
+    text-align: center;
+}
+.knight {
+    /* yes xxx-large actually exists, despite VS Code not knowing what it is*/
+    font-size: xxx-large;
+    text-align: center;
+}
+.bishop {
+    /* yes xxx-large actually exists, despite VS Code not knowing what it is*/
+    font-size: xxx-large;
+    text-align: center;
+}
+.king {
+    /* yes xxx-large actually exists, despite VS Code not knowing what it is*/
+    font-size: xxx-large;
+    text-align: center;
+}
+.queen {
+    /* yes xxx-large actually exists, despite VS Code not knowing what it is*/
+    font-size: xxx-large;
+    text-align: center;
+}
+.pawn {
+    /* yes xxx-large actually exists, despite VS Code not knowing what it is*/
+    font-size: xxx-large;
+    text-align: center;
 }
