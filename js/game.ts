@@ -4,8 +4,9 @@ class Game {
     private black: Player;
     private turn: Color;
     private static instance: Game;
-    public static create(white: Player, black: Player) {
+    public static create(white: Player, black: Player): Game {
         this.instance = new Game(white, black);
+        return this.instance;
     }
     public static getInstance(): Game {
         if(Game.instance === undefined) {
@@ -30,5 +31,8 @@ class Game {
     public start(): void {
         console.log("Game begun");
         this.turn = Color.WHITE;
+    }
+    public play(): void {
+        this.turn == Color.WHITE ? this.white.play() : this.black.play();
     }
 }
