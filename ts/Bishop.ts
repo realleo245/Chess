@@ -4,6 +4,8 @@ class Bishop extends Piece {
             : (squareColor == SquareColor.LIGHT ? super(color, 0, 2) : super(color, 0, 5));
     }
     public getAllLegalMoves(): Square[] {
-        throw new Error("Method not implemented.");
+        let moves: Square[] = [];
+        
+        return moves;
     }
 }
