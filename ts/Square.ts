@@ -50,4 +50,10 @@ class Square {
     public getPiece(): Piece | null | undefined {
         return this.piece;
     }
+    public setPiece(piece: Piece): void {
+        this.piece = piece;
+    }
+    public isOccupied(): boolean {
+        return this.piece == null || this.piece == undefined;
+    }
  }
