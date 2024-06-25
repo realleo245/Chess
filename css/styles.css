@@ -15,6 +15,11 @@
     width: 75vh;
     height: 75vh;
 }
+.piece {
+    /* yes xxx-large actually exists, despite VS Code not knowing what it is*/
+    font-size: xxx-large;
+    text-align: center;
+}
 .rook {
     /* yes xxx-large actually exists, despite VS Code not knowing what it is*/
     font-size: xxx-large;
