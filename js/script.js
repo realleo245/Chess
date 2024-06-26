@@ -10,9 +10,9 @@ document.addEventListener("DOMContentLoaded", function() {
             if(piece === undefined) {
                 cell = target;
                 piece = cell.textContent;
-                cell.textContent = "";
             }
             else {
+                cell.textContent = "";
                 target.textContent = piece;
                 piece = undefined;
             }
