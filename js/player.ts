@@ -15,7 +15,26 @@ class Player {
         }
     }
     public play(): Play {
-        // Represents a play
-        
+        let piece: string = undefined;
+        let cell: any = undefined;
+        document.getElementById("game").addEventListener("click", (e) => {
+            console.log("click detected");
+            let target = e.target as Node;
+            if(target && target.nodeName == "TD") {
+                cell = target as HTMLTableCellElement;
+                const row: HTMLTableRowElement = cell.parentElement as HTMLTableRowElement;
+                const rowIndex = row.rowIndex;
+                const colIndex = cell.cellIndex;
+                if(piece === undefined) {
+                    cell = target;
+                    piece = cell.textContent;
+                    cell.textContent = "";
+                }
+                else {
+                    target.textContent = piece;
+                    piece = undefined;
+                }
+            }          
+        });  
     }
 }
