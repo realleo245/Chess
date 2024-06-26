@@ -1,22 +1,23 @@
 // Placeholder
-//window.onload = function() { 
-document.addEventListener("DOMContentLoaded", function() {
-    let piece = undefined;
-    let cell = undefined;
-    document.getElementById("game").addEventListener("click", (e) => {
-        console.log("click detected");
-        let target = e.target;
-        if(target && target.nodeName == "TD") {
-            if(piece === undefined) {
-                cell = target;
-                piece = cell.textContent;
-                cell.textContent = "";
+document.addEventListener("DOMContentLoaded", function () {
+    var piece = undefined;
+    var cell = undefined;
+    document.getElementById("start").addEventListener("click", function () {
+        document.getElementById("start").style.visibility = "hidden";
+        document.getElementById("game").addEventListener("click", function (e) {
+            console.log("click detected");
+            var target = e.target;
+            if (target && target.nodeName == "TD") {
+                if (piece === undefined) {
+                    cell = target;
+                    piece = cell.textContent;
+                }
+                else {
+                    cell.textContent = "";
+                    target.textContent = piece;
+                    piece = undefined;
+                }
             }
-            else {
-                target.textContent = piece;
-                piece = undefined;
-            }
-        }
-        
-    });  
+        });
+    });
 });
