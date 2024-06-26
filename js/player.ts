@@ -14,7 +14,8 @@ class Player {
             this.pieces.push(new Pawn(color, i));
         }
     }
-    public play(): void {
+    public play(): Play {
         // Represents a play
+        
     }
 }

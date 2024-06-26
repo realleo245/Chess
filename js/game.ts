@@ -32,7 +32,7 @@ class Game {
         console.log("Game begun");
         this.turn = Color.WHITE;
     }
-    public play(): void {
-        this.turn == Color.WHITE ? this.white.play() : this.black.play();
+    public play(): Play {
+        return this.turn == Color.WHITE ? this.white.play() : this.black.play();
     }
 }

@@ -4,9 +4,7 @@ class King extends Piece {
     }
     public getAllLegalMoves(): Square[] {
         let moves: Square[] = [];
-        if(this.location.getRow() - 1 >= 0) {
-            moves.push(new Square(this.location.getRow() - 1, this.location.getCol()));
-        }
+        
         return moves;
     }
 }

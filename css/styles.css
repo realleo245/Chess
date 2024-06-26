@@ -50,3 +50,9 @@
     font-size: xxx-large;
     text-align: center;
 }
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 2vh;
+}
