@@ -1,4 +1,7 @@
-abstract class Piece {
+import{Color} from './color';
+import{Game} from './game';
+
+export abstract class Piece {
     protected location: Square;
     protected color: Color;
     protected hasMoved: boolean;

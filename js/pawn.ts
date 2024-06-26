@@ -1,3 +1,7 @@
+import {Color} from './color';
+import {Piece} from './piece';
+import {Square} from './square';
+
 class Pawn extends Piece {
     public constructor(color: Color, position: number) {
         color == Color.WHITE ? super(color, 6, position) : super(color, 1, position);

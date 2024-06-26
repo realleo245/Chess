@@ -1,4 +1,6 @@
-class Play {
+import {Piece} from './piece';
+
+export class Play {
     private piece: Piece;
     private previousLocation: Square;
     private nextLocation: Square;

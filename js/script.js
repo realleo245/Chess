@@ -1,21 +1,20 @@
-import {Color} from './color';
-import {Game} from "./game";
-import {Play} from './play';
-import {Player} from "./player";
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+var game_1 = require("./game");
 // Placeholder
-document.addEventListener("DOMContentLoaded", function() {
+document.addEventListener("DOMContentLoaded", function () {
     //let piece = undefined;
-    let cell = undefined;
-    let game: Game = Game.create(new Player(Color.WHITE), new Player(Color.BLACK));
-    document.getElementById("start").addEventListener("click", function() {
+    var cell = undefined;
+    var game = game_1.Game.create(new Player(Color.WHITE), new Player(Color.BLACK));
+    document.getElementById("start").addEventListener("click", function () {
         game.start();
-        while(!game.isFinished()) {
-            let play: Play = game.play();
-            const table: HTMLTableElement = document.getElementById("game") as HTMLTableElement;
-            let rowIndex: number = play.getPreviousLocation().getRow();
-            let colIndex: number = play.getPreviousLocation().getCol();
+        while (!game.isFinished()) {
+            var play = game.play();
+            var table = document.getElementById("game");
+            var rowIndex = play.getPreviousLocation().getRow();
+            var colIndex = play.getPreviousLocation().getCol();
             cell = table.rows[rowIndex].cells[colIndex];
-            const piece: string = cell.textContent;
+            var piece = cell.textContent;
             rowIndex = play.getNextLocation().getRow();
             colIndex = play.getNextLocation().getCol();
             cell.textContent = "";
@@ -37,5 +36,5 @@ document.addEventListener("DOMContentLoaded", function() {
         //         }
         //     }          
         // });  
-    }); 
+    });
 });

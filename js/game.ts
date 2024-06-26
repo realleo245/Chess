@@ -1,3 +1,7 @@
+import{Color} from './color';
+import {Play} from './play';
+import {Player} from './player';
+
 class Game {
     private board: Square[][] = [];
     private white: Player;
@@ -34,5 +38,9 @@ class Game {
     }
     public play(): Play {
         return this.turn == Color.WHITE ? this.white.play() : this.black.play();
+    }
+    public isFinished(): boolean {
+        //TODO: Actually write it
+        return false;
     }
 }

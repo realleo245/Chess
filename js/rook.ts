@@ -1,4 +1,4 @@
-class Rook extends Piece {
+export class Rook extends Piece {
     public constructor(color: Color, squareColor: SquareColor) {
         color == Color.WHITE ? (squareColor == SquareColor.LIGHT ? super(color, 7, 7) : super(color, 7, 0))  
             : (squareColor == SquareColor.LIGHT ? super(color, 0, 0) : super(color, 0, 7));

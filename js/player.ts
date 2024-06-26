@@ -1,4 +1,10 @@
-class Player {
+import{Color} from './color';
+import{Game} from './game';
+import{Piece} from './piece';
+
+
+
+export class Player {
     private color: Color;
     // Represents pieces in the order of [King, Queen, Light Rook, Dark Rook, Light Knight, Dark Knight, Light Bishop, Dark Bishop, Pawn(s) in order]
     // Promoted pieces are pushed to the end
@@ -15,8 +21,10 @@ class Player {
         }
     }
     public play(): Play {
-        let piece: string = undefined;
+        let piece: Piece = undefined;
         let cell: any = undefined;
+        let previousLocation: Square = undefined;
+        let nextLocation: Square = undefined;
         document.getElementById("game").addEventListener("click", (e) => {
             console.log("click detected");
             let target = e.target as Node;
@@ -25,16 +33,18 @@ class Player {
                 const row: HTMLTableRowElement = cell.parentElement as HTMLTableRowElement;
                 const rowIndex = row.rowIndex;
                 const colIndex = cell.cellIndex;
-                if(piece === undefined) {
-                    cell = target;
-                    piece = cell.textContent;
-                    cell.textContent = "";
-                }
-                else {
-                    target.textContent = piece;
-                    piece = undefined;
+                if(Game.getInstance().getBoard()[rowIndex][colIndex].getPiece().getColor() == this.color) {
+                    if(piece === undefined) {
+                        previousLocation = Game.getInstance().getBoard()[rowIndex][colIndex];
+                        piece = previousLocation.getPiece();
+                    }
+                    else {
+                        nextLocation = Game.getInstance().getBoard()[rowIndex][colIndex];
+                        piece = undefined
+                    }
                 }
             }          
         });  
+        return new Play(piece, previousLocation, nextLocation);
     }
 }

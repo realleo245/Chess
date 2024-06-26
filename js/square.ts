@@ -1,7 +1,8 @@
+import{Piece} from './piece';
 /**
  * Represents a square on the chess board
  */
-class Square {
+export class Square {
     /**
      * Represents the row
      */
