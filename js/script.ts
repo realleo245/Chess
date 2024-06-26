@@ -1,9 +1,4 @@
-enum Color {
-    WHITE, BLACK
-}
-enum SquareColor {
-    LIGHT, DARK
-}
+
 class Square {
     /**
      * Represents the row
@@ -184,10 +179,10 @@ class Player {
         }
     }
     public play(): Play {
-        let piece: Piece = undefined;
+        let piece: Piece | null | undefined = undefined;
         let cell: any = undefined;
-        let previousLocation: Square = undefined;
-        let nextLocation: Square = undefined;
+        let previousLocation: Square | undefined = undefined;
+        let nextLocation: Square | undefined = undefined;
         document.getElementById("game").addEventListener("click", (e) => {
             console.log("click detected");
             let target = e.target as Node;
@@ -203,7 +198,7 @@ class Player {
                     }
                     else {
                         nextLocation = Game.getInstance().getBoard()[rowIndex][colIndex];
-                        piece = undefined
+                        //TODO: Set the actual piece
                     }
                 }
             }          
@@ -256,7 +251,7 @@ class Game {
 // Placeholder
 document.addEventListener("DOMContentLoaded", function() {
     //let piece = undefined;
-    let cell = undefined;
+    let cell: any = undefined;
     let game: Game = Game.create(new Player(Color.WHITE), new Player(Color.BLACK));
     document.getElementById("start").addEventListener("click", function() {
         game.start();
