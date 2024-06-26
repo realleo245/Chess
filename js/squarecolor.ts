@@ -1,3 +1,0 @@
-enum SquareColor {
-    LIGHT, DARK
-}
