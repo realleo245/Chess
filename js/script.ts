@@ -22,9 +22,7 @@ class Square {
     public constructor(row: number, col: number, piece: Piece) {
         this.row = row;
         this.col = col;
-        if(typeof piece != 'undefined') {
-            this.piece = piece;
-        }
+        this.piece = piece;
     }
     /**
      * @returns The row letter
@@ -178,33 +176,72 @@ class Player {
             this.pieces.push(new Pawn(this.color, i));
         }
     }
-    public play(): Play {
+    public async play(): Promise<Play> {
         let piece: unknown = undefined;
         let cell: any = undefined;
         let previousLocation: unknown = undefined;
         let nextLocation: unknown = undefined;
-        document.getElementById("game")?.addEventListener("click", (e) => {
-            console.log("click detected");
-            let target = e.target as Node;
-            if(target && target.nodeName == "TD") {
-                cell = target as HTMLTableCellElement;
-                const row: HTMLTableRowElement = cell.parentElement as HTMLTableRowElement;
-                const rowIndex = row.rowIndex;
-                const colIndex = cell.cellIndex;
-                if(Game.getInstance().getBoard()[rowIndex][colIndex].getPiece()?.getColor() == this.color) {
-                    if(piece === undefined) {
-                        previousLocation = Game.getInstance().getBoard()[rowIndex][colIndex];
-                        piece = (previousLocation as Square).getPiece();
-                    }
-                    else {
-                        nextLocation = Game.getInstance().getBoard()[rowIndex][colIndex];
-                        //TODO: Set the actual piece
+        // //TODO: Replace with something that I actually understand
+        // document.getElementById("game")?.addEventListener("click", (e) => {
+        //     console.log("click detected");
+        //     let target = e.target as Node;
+        //     if(target && target.nodeName == "TD") {
+        //         cell = target as HTMLTableCellElement;
+        //         const row: HTMLTableRowElement = cell.parentElement as HTMLTableRowElement;
+        //         const rowIndex = row.rowIndex;
+        //         const colIndex = cell.cellIndex;
+        //         if(Game.getInstance().getBoard()[rowIndex][colIndex].getPiece()?.getColor() == this.color) {
+        //             if(piece === undefined) {
+        //                 previousLocation = Game.getInstance().getBoard()[rowIndex][colIndex];
+        //                 piece = (previousLocation as Square).getPiece();
+        //             }
+        //             else {
+        //                 nextLocation = Game.getInstance().getBoard()[rowIndex][colIndex];
+        //                 //TODO: Set the actual piece
+        //             }
+        //         }
+        //     }       
+        // });  
+       
+        const play = await this.waitForPlay();
+        return play;
+    }
+    private async waitForPlay(): Promise<Play> {
+        let piece: Piece | undefined = undefined;
+        let cell: HTMLTableCellElement | undefined = undefined;
+        let previousLocation: Square | undefined = undefined;
+        let nextLocation: Square | undefined = undefined;
+    
+        return new Promise<Play>((resolve) => {
+            const clickHandler = (e: MouseEvent) => {
+                console.log("Click detected");
+                const target = e.target as Node;
+    
+                if (target && target.nodeName === "TD") {
+                    cell = target as HTMLTableCellElement;
+                    const row = cell.parentElement as HTMLTableRowElement;
+                    const rowIndex = row.rowIndex;
+                    const colIndex = cell.cellIndex;
+    
+                    if (Game.getInstance().getBoard()[rowIndex][colIndex].getPiece()?.getColor() === this.color) {
+                        if (piece === undefined) {
+                            previousLocation = Game.getInstance().getBoard()[rowIndex][colIndex];
+                            piece = previousLocation.getPiece();
+                        } else {
+                            nextLocation = Game.getInstance().getBoard()[rowIndex][colIndex];
+                            // TODO: Set the actual piece
+                        }
                     }
                 }
-            }          
-        });  
-        return new Play(piece as Piece, previousLocation as Square, nextLocation as Square);
+    
+                resolve(new Play(piece as Piece, previousLocation as Square, nextLocation as Square));
+                document.getElementById("game")?.removeEventListener("click", clickHandler);
+            };
+    
+            document.getElementById("game")?.addEventListener("click", clickHandler);
+        });
     }
+    
 }
 class Game {
     private board: Square[][] = [];
@@ -245,7 +282,7 @@ class Game {
         this.black.loadPieces();
     }
     public play(): Play {
-        return this.turn == Color.WHITE ? this.white.play() : this.black.play();
+        return this.turn == Color.WHITE ? this.white.play().then((play) => play) : this.black.play().then((play) => play);
     }
     public isFinished(): boolean {
         //TODO: Actually write it
@@ -264,6 +301,7 @@ document.addEventListener("DOMContentLoaded", function() {
         while(!game.isFinished()) {
             let play: Play = game.play();
             const table: HTMLTableElement = document.getElementById("game") as HTMLTableElement;
+            console.log(play);
             let rowIndex: number = play.getPreviousLocation().getRow();
             let colIndex: number = play.getPreviousLocation().getCol();
             cell = table.rows[rowIndex].cells[colIndex];
