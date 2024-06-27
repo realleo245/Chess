@@ -1,4 +1,3 @@
-"use strict";
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = function (d, b) {
         extendStatics = Object.setPrototypeOf ||
@@ -14,9 +13,6 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
-Object.defineProperty(exports, "__esModule", { value: true });
-var color_1 = require("./color");
-var squarecolor_1 = require("./squarecolor");
 var Square = /** @class */ (function () {
     /**
      * Creates a new Square object
@@ -25,11 +21,12 @@ var Square = /** @class */ (function () {
      * @param piece The Piece occupying the Square
      * @param color The SquareColor of the square
      */
-    function Square(row, col, piece, color) {
+    function Square(row, col, piece) {
         this.row = row;
         this.col = col;
-        this.piece = piece;
-        this.color = color;
+        if (typeof piece != 'undefined') {
+            this.piece = piece;
+        }
     }
     /**
      * @returns The row letter
@@ -77,8 +74,8 @@ var Bishop = /** @class */ (function (_super) {
     __extends(Bishop, _super);
     function Bishop(color, squareColor) {
         var _this = this;
-        color == color_1.Color.WHITE ? (squareColor == squarecolor_1.SquareColor.LIGHT ? _this = _super.call(this, color, 7, 5) || this : _this = _super.call(this, color, 7, 2) || this)
-            : (squareColor == squarecolor_1.SquareColor.LIGHT ? _this = _super.call(this, color, 0, 2) || this : _this = _super.call(this, color, 0, 5) || this);
+        color == Color.WHITE ? (squareColor == SquareColor.LIGHT ? _this = _super.call(this, color, 7, 5) || this : _this = _super.call(this, color, 7, 2) || this)
+            : (squareColor == SquareColor.LIGHT ? _this = _super.call(this, color, 0, 2) || this : _this = _super.call(this, color, 0, 5) || this);
         return _this;
     }
     Bishop.prototype.getAllLegalMoves = function () {
@@ -91,7 +88,7 @@ var King = /** @class */ (function (_super) {
     __extends(King, _super);
     function King(color) {
         var _this = this;
-        color == color_1.Color.WHITE ? _this = _super.call(this, color, 7, 3) || this : _this = _super.call(this, color, 3, 0) || this;
+        color == Color.WHITE ? _this = _super.call(this, color, 7, 3) || this : _this = _super.call(this, color, 3, 0) || this;
         return _this;
     }
     King.prototype.getAllLegalMoves = function () {
@@ -104,8 +101,8 @@ var Knight = /** @class */ (function (_super) {
     __extends(Knight, _super);
     function Knight(color, squareColor) {
         var _this = this;
-        color == color_1.Color.WHITE ? (squareColor == squarecolor_1.SquareColor.LIGHT ? _this = _super.call(this, color, 7, 1) || this : _this = _super.call(this, color, 7, 6) || this)
-            : (squareColor == squarecolor_1.SquareColor.LIGHT ? _this = _super.call(this, color, 0, 6) || this : _this = _super.call(this, color, 0, 2) || this);
+        color == Color.WHITE ? (squareColor == SquareColor.LIGHT ? _this = _super.call(this, color, 7, 1) || this : _this = _super.call(this, color, 7, 6) || this)
+            : (squareColor == SquareColor.LIGHT ? _this = _super.call(this, color, 0, 6) || this : _this = _super.call(this, color, 0, 2) || this);
         return _this;
     }
     Knight.prototype.getAllLegalMoves = function () {
@@ -117,7 +114,7 @@ var Queen = /** @class */ (function (_super) {
     __extends(Queen, _super);
     function Queen(color) {
         var _this = this;
-        color == color_1.Color.WHITE ? _this = _super.call(this, color, 7, 4) || this : _this = _super.call(this, color, 0, 4) || this;
+        color == Color.WHITE ? _this = _super.call(this, color, 7, 4) || this : _this = _super.call(this, color, 0, 4) || this;
         return _this;
     }
     Queen.prototype.getAllLegalMoves = function () {
@@ -129,7 +126,7 @@ var Pawn = /** @class */ (function (_super) {
     __extends(Pawn, _super);
     function Pawn(color, position) {
         var _this = this;
-        color == color_1.Color.WHITE ? _this = _super.call(this, color, 6, position) || this : _this = _super.call(this, color, 1, position) || this;
+        color == Color.WHITE ? _this = _super.call(this, color, 6, position) || this : _this = _super.call(this, color, 1, position) || this;
         return _this;
     }
     Pawn.prototype.getAllLegalMoves = function () {
@@ -141,8 +138,8 @@ var Rook = /** @class */ (function (_super) {
     __extends(Rook, _super);
     function Rook(color, squareColor) {
         var _this = this;
-        color == color_1.Color.WHITE ? (squareColor == squarecolor_1.SquareColor.LIGHT ? _this = _super.call(this, color, 7, 7) || this : _this = _super.call(this, color, 7, 0) || this)
-            : (squareColor == squarecolor_1.SquareColor.LIGHT ? _this = _super.call(this, color, 0, 0) || this : _this = _super.call(this, color, 0, 7) || this);
+        color == Color.WHITE ? (squareColor == SquareColor.LIGHT ? _this = _super.call(this, color, 7, 7) || this : _this = _super.call(this, color, 7, 0) || this)
+            : (squareColor == SquareColor.LIGHT ? _this = _super.call(this, color, 0, 0) || this : _this = _super.call(this, color, 0, 7) || this);
         return _this;
     }
     Rook.prototype.getAllLegalMoves = function () {
@@ -186,22 +183,27 @@ var Player = /** @class */ (function () {
         // Promoted pieces are pushed to the end
         this.pieces = [];
         this.color = color;
-        this.pieces.push(new King(color));
-        this.pieces.push(new Queen(color));
-        this.pieces.push(new Rook(color, squarecolor_1.SquareColor.LIGHT), new Rook(color, squarecolor_1.SquareColor.DARK));
-        this.pieces.push(new Knight(color, squarecolor_1.SquareColor.LIGHT), new Knight(color, squarecolor_1.SquareColor.DARK));
-        this.pieces.push(new Bishop(color, squarecolor_1.SquareColor.LIGHT), new Bishop(color, squarecolor_1.SquareColor.DARK));
-        for (var i = 0; i < 8; i++) {
-            this.pieces.push(new Pawn(color, i));
-        }
     }
+    // Method exists because... circular dependencies
+    Player.prototype.loadPieces = function () {
+        this.pieces.push(new King(this.color));
+        this.pieces.push(new Queen(this.color));
+        this.pieces.push(new Rook(this.color, SquareColor.LIGHT), new Rook(this.color, SquareColor.DARK));
+        this.pieces.push(new Knight(this.color, SquareColor.LIGHT), new Knight(this.color, SquareColor.DARK));
+        this.pieces.push(new Bishop(this.color, SquareColor.LIGHT), new Bishop(this.color, SquareColor.DARK));
+        for (var i = 0; i < 8; i++) {
+            this.pieces.push(new Pawn(this.color, i));
+        }
+    };
     Player.prototype.play = function () {
         var _this = this;
+        var _a;
         var piece = undefined;
         var cell = undefined;
         var previousLocation = undefined;
         var nextLocation = undefined;
-        document.getElementById("game").addEventListener("click", function (e) {
+        (_a = document.getElementById("game")) === null || _a === void 0 ? void 0 : _a.addEventListener("click", function (e) {
+            var _a;
             console.log("click detected");
             var target = e.target;
             if (target && target.nodeName == "TD") {
@@ -209,7 +211,7 @@ var Player = /** @class */ (function () {
                 var row = cell.parentElement;
                 var rowIndex = row.rowIndex;
                 var colIndex = cell.cellIndex;
-                if (Game.getInstance().getBoard()[rowIndex][colIndex].getPiece().getColor() == _this.color) {
+                if (((_a = Game.getInstance().getBoard()[rowIndex][colIndex].getPiece()) === null || _a === void 0 ? void 0 : _a.getColor()) == _this.color) {
                     if (piece === undefined) {
                         previousLocation = Game.getInstance().getBoard()[rowIndex][colIndex];
                         piece = previousLocation.getPiece();
@@ -231,9 +233,11 @@ var Game = /** @class */ (function () {
         this.white = white;
         this.black = black;
         for (var i = 0; i < 8; i++) {
+            var row = [];
             for (var j = 0; j < 8; j++) {
-                this.board[i][j] = new Square(i, j);
+                row.push(new Square(i, j, undefined));
             }
+            this.board.push(row);
         }
     }
     Game.create = function (white, black) {
@@ -253,10 +257,12 @@ var Game = /** @class */ (function () {
     };
     Game.prototype.start = function () {
         console.log("Game begun");
-        this.turn = color_1.Color.WHITE;
+        this.turn = Color.WHITE;
+        this.white.loadPieces();
+        this.black.loadPieces();
     };
     Game.prototype.play = function () {
-        return this.turn == color_1.Color.WHITE ? this.white.play() : this.black.play();
+        return this.turn == Color.WHITE ? this.white.play() : this.black.play();
     };
     Game.prototype.isFinished = function () {
         //TODO: Actually write it
@@ -266,10 +272,13 @@ var Game = /** @class */ (function () {
 }());
 // Placeholder
 document.addEventListener("DOMContentLoaded", function () {
+    var _a;
     //let piece = undefined;
     var cell = undefined;
-    var game = Game.create(new Player(color_1.Color.WHITE), new Player(color_1.Color.BLACK));
-    document.getElementById("start").addEventListener("click", function () {
+    var white = new Player(Color.WHITE);
+    var black = new Player(Color.BLACK);
+    var game = Game.create(white, black);
+    (_a = document.getElementById("start")) === null || _a === void 0 ? void 0 : _a.addEventListener("click", function () {
         game.start();
         while (!game.isFinished()) {
             var play = game.play();

@@ -1,3 +1,3 @@
-export enum Color {
+enum Color {
     WHITE, BLACK
 }

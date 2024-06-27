@@ -1,5 +1,4 @@
-import{Color} from './color';
-import{SquareColor} from './squarecolor';
+
 class Square {
     /**
      * Represents the row
@@ -14,21 +13,18 @@ class Square {
      */
     private piece?: Piece;
     /**
-     * Represents the color of the square
-     */
-    private color?: SquareColor;
-    /**
      * Creates a new Square object
      * @param row The row
      * @param col The column
      * @param piece The Piece occupying the Square
      * @param color The SquareColor of the square
      */
-    public constructor(row: number, col: number, piece?: Piece, color?: SquareColor) {
+    public constructor(row: number, col: number, piece: Piece) {
         this.row = row;
         this.col = col;
-        this.piece = piece;
-        this.color = color;
+        if(typeof piece != 'undefined') {
+            this.piece = piece;
+        }
     }
     /**
      * @returns The row letter
@@ -170,21 +166,24 @@ class Player {
     private pieces: Piece[] = [];
     public constructor(color: Color) {
         this.color = color;
-        this.pieces.push(new King(color));
-        this.pieces.push(new Queen(color));
-        this.pieces.push(new Rook(color, SquareColor.LIGHT), new Rook(color, SquareColor.DARK));
-        this.pieces.push(new Knight(color, SquareColor.LIGHT), new Knight(color, SquareColor.DARK));
-        this.pieces.push(new Bishop(color, SquareColor.LIGHT), new Bishop(color, SquareColor.DARK));
+    }
+    // Method exists because... circular dependencies
+    public loadPieces(): void {
+        this.pieces.push(new King(this.color));
+        this.pieces.push(new Queen(this.color));
+        this.pieces.push(new Rook(this.color, SquareColor.LIGHT), new Rook(this.color, SquareColor.DARK));
+        this.pieces.push(new Knight(this.color, SquareColor.LIGHT), new Knight(this.color, SquareColor.DARK));
+        this.pieces.push(new Bishop(this.color, SquareColor.LIGHT), new Bishop(this.color, SquareColor.DARK));
         for(let i: number = 0; i < 8; i++) {
-            this.pieces.push(new Pawn(color, i));
+            this.pieces.push(new Pawn(this.color, i));
         }
     }
     public play(): Play {
-        let piece: Piece | null | undefined = undefined;
+        let piece: unknown = undefined;
         let cell: any = undefined;
-        let previousLocation: Square | undefined = undefined;
-        let nextLocation: Square | undefined = undefined;
-        document.getElementById("game").addEventListener("click", (e) => {
+        let previousLocation: unknown = undefined;
+        let nextLocation: unknown = undefined;
+        document.getElementById("game")?.addEventListener("click", (e) => {
             console.log("click detected");
             let target = e.target as Node;
             if(target && target.nodeName == "TD") {
@@ -192,10 +191,10 @@ class Player {
                 const row: HTMLTableRowElement = cell.parentElement as HTMLTableRowElement;
                 const rowIndex = row.rowIndex;
                 const colIndex = cell.cellIndex;
-                if(Game.getInstance().getBoard()[rowIndex][colIndex].getPiece().getColor() == this.color) {
+                if(Game.getInstance().getBoard()[rowIndex][colIndex].getPiece()?.getColor() == this.color) {
                     if(piece === undefined) {
                         previousLocation = Game.getInstance().getBoard()[rowIndex][colIndex];
-                        piece = previousLocation.getPiece();
+                        piece = (previousLocation as Square).getPiece();
                     }
                     else {
                         nextLocation = Game.getInstance().getBoard()[rowIndex][colIndex];
@@ -204,7 +203,7 @@ class Player {
                 }
             }          
         });  
-        return new Play(piece, previousLocation, nextLocation);
+        return new Play(piece as Piece, previousLocation as Square, nextLocation as Square);
     }
 }
 class Game {
@@ -229,9 +228,11 @@ class Game {
         this.white = white;
         this.black = black;
         for(let i: number = 0; i < 8; i++) {
+            let row: Square[] = [];
             for(let j: number = 0; j < 8; j++) {
-                this.board[i][j] = new Square(i, j);
+                row.push(new Square(i, j, undefined));
             }
+            this.board.push(row);
         }
     }
     public getBoard(): Square[][] {
@@ -240,6 +241,8 @@ class Game {
     public start(): void {
         console.log("Game begun");
         this.turn = Color.WHITE;
+        this.white.loadPieces();
+        this.black.loadPieces();
     }
     public play(): Play {
         return this.turn == Color.WHITE ? this.white.play() : this.black.play();
@@ -253,8 +256,10 @@ class Game {
 document.addEventListener("DOMContentLoaded", function() {
     //let piece = undefined;
     let cell: any = undefined;
-    let game: Game = Game.create(new Player(Color.WHITE), new Player(Color.BLACK));
-    document.getElementById("start").addEventListener("click", function() {
+    let white: Player = new Player(Color.WHITE);
+    let black: Player = new Player(Color.BLACK);
+    let game: Game = Game.create(white, black);
+    document.getElementById("start")?.addEventListener("click", function() {
         game.start();
         while(!game.isFinished()) {
             let play: Play = game.play();
