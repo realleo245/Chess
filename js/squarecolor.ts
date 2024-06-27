@@ -1,3 +1,3 @@
-enum SquareColor {
+export enum SquareColor {
     LIGHT, DARK
 }

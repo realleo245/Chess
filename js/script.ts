@@ -1,4 +1,5 @@
-
+import{Color} from './color';
+import{SquareColor} from './squarecolor';
 class Square {
     /**
      * Represents the row
