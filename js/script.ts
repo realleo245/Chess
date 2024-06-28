@@ -54,6 +54,7 @@ abstract class Piece {
     protected location: Square;
     protected color: Color;
     protected hasMoved: boolean;
+    protected unicodeSymbol: string;
     protected constructor(color: Color, startRow: number, startCol: number) {
         this.color = color;
         this.location = Game.getInstance().getBoard()[startRow][startCol];
@@ -181,112 +182,111 @@ class Player {
         let cell: any = undefined;
         let previousLocation: unknown = undefined;
         let nextLocation: unknown = undefined;
-        // //TODO: Replace with something that I actually understand
-        // document.getElementById("game")?.addEventListener("click", (e) => {
-        //     console.log("click detected");
-        //     let target = e.target as Node;
-        //     if(target && target.nodeName == "TD") {
-        //         cell = target as HTMLTableCellElement;
-        //         const row: HTMLTableRowElement = cell.parentElement as HTMLTableRowElement;
-        //         const rowIndex = row.rowIndex;
-        //         const colIndex = cell.cellIndex;
-        //         if(Game.getInstance().getBoard()[rowIndex][colIndex].getPiece()?.getColor() == this.color) {
-        //             if(piece === undefined) {
-        //                 previousLocation = Game.getInstance().getBoard()[rowIndex][colIndex];
-        //                 piece = (previousLocation as Square).getPiece();
-        //             }
-        //             else {
-        //                 nextLocation = Game.getInstance().getBoard()[rowIndex][colIndex];
-        //                 //TODO: Set the actual piece
-        //             }
-        //         }
-        //     }       
-        // });  
+        document.getElementById("game")?.addEventListener("click", (e) => {
+            console.log("click detected");
+            let target = e.target as Node;
+            if(target && target.nodeName == "TD") {
+                cell = target as HTMLTableCellElement;
+                const row: HTMLTableRowElement = cell.parentElement as HTMLTableRowElement;
+                const rowIndex = row.rowIndex;
+                const colIndex = cell.cellIndex;
+                if(Game.getInstance().getBoard()[rowIndex][colIndex].getPiece()?.getColor() == this.color) {
+                    if(piece === undefined) {
+                        previousLocation = Game.getInstance().getBoard()[rowIndex][colIndex];
+                        piece = (previousLocation as Square).getPiece();
+                    }
+                    else {
+                        nextLocation = Game.getInstance().getBoard()[rowIndex][colIndex];
+                        //TODO: Set the actual piece
+                    }
+                }
+            }       
+        });  
        
-        const play: Play = await this.waitForPlay();
-        return play;
+        //const play: Play = await this.waitForPlay();
+        return new Play(piece as Piece, previousLocation as Square, nextLocation as Square);
     }
     // Assume you have a function to handle cell clicks
-    public handleCellClick(cell: HTMLElement): Promise<Play> {
-        return new Promise<Play>((resolve) => {
-            cell.addEventListener('click', () => {
-            // Resolve the Promise with the Play object
-            const play = new Play(piece as Piece, previousLocation as Square, nextLocation as Square);
-            resolve(play);
-        });
-    });
-}
+//     public handleCellClick(cell: HTMLElement): Promise<Play> {
+//         return new Promise<Play>((resolve) => {
+//             cell.addEventListener('click', () => {
+//             // Resolve the Promise with the Play object
+//             const play = new Play(piece as Piece, previousLocation as Square, nextLocation as Square);
+//             resolve(play);
+//         });
+//     });
+// }
 
-// Initialize shared context
+// // Initialize shared context
 
-public async waitForPlay(): Promise<Play> {
-    let piece: Piece | undefined;
-    let previousLocation: Square | undefined;
-    let nextLocation: Square | undefined;
+// public async waitForPlay(): Promise<Play> {
+//     let piece: Piece | undefined;
+//     let previousLocation: Square | undefined;
+//     let nextLocation: Square | undefined;
 
-    const allCells = document.querySelectorAll('td'); // Get all table cells
+//     const allCells = document.querySelectorAll('td'); // Get all table cells
 
-    // Attach click event listeners to all cells
-    allCells.forEach(async (cell) => {
-        const clickedCell = await this.handleCellClick(cell);
-        if (piece === undefined) {
-            previousLocation = cell.rowSpan;
-            piece = previousLocation.getPiece();
-        } else {
-            nextLocation = /* Set next location based on clicked cell */;
-            // TODO: Move the piece on the board
-            console.log('Both cells clicked! Proceed with your logic.');
+//     // Attach click event listeners to all cells
+//     allCells.forEach(async (cell) => {
+//         const clickedCell = await this.handleCellClick(cell);
+//         if (piece === undefined) {
+//             previousLocation = cell.rowSpan;
+//             piece = previousLocation.getPiece();
+//         } else {
+//             nextLocation = /* Set next location based on clicked cell */;
+//             // TODO: Move the piece on the board
+//             console.log('Both cells clicked! Proceed with your logic.');
 
-            // Store the Play object in the shared context
-            sharedContext.play = clickedCell;
-        }
-    });
-}
+//             // Store the Play object in the shared context
+//             sharedContext.play = clickedCell;
+//         }
+//     });
+// }
 
-// Call the function to start waiting for user input
-waitForUserInput();
+// // Call the function to start waiting for user input
+// waitForUserInput();
 
-// Access the resolved Play object outside the function
-if (sharedContext.play) {
-    console.log('Play object outside the function:', sharedContext.play);
-} else {
-    console.log('Waiting for user input...');
-}
-    //  async waitForPlay(): Promise<Play> {
-    //     let piece: Piece | undefined = undefined;
-    //     let cell: HTMLTableCellElement | undefined = undefined;
-    //     let previousLocation: Square | undefined = undefined;
-    //     let nextLocation: Square | undefined = undefined;
+// // Access the resolved Play object outside the function
+// if (sharedContext.play) {
+//     console.log('Play object outside the function:', sharedContext.play);
+// } else {
+//     console.log('Waiting for user input...');
+// }
+//     //  async waitForPlay(): Promise<Play> {
+//     //     let piece: Piece | undefined = undefined;
+//     //     let cell: HTMLTableCellElement | undefined = undefined;
+//     //     let previousLocation: Square | undefined = undefined;
+//     //     let nextLocation: Square | undefined = undefined;
     
-    //     return new Promise<Play>((resolve) => {
-    //         const clickHandler = (e: MouseEvent) => {
-    //             console.log("Click detected");
-    //             const target = e.target as Node;
+//     //     return new Promise<Play>((resolve) => {
+//     //         const clickHandler = (e: MouseEvent) => {
+//     //             console.log("Click detected");
+//     //             const target = e.target as Node;
     
-    //             if (target && target.nodeName === "TD") {
-    //                 cell = target as HTMLTableCellElement;
-    //                 const row = cell.parentElement as HTMLTableRowElement;
-    //                 const rowIndex = row.rowIndex;
-    //                 const colIndex = cell.cellIndex;
+//     //             if (target && target.nodeName === "TD") {
+//     //                 cell = target as HTMLTableCellElement;
+//     //                 const row = cell.parentElement as HTMLTableRowElement;
+//     //                 const rowIndex = row.rowIndex;
+//     //                 const colIndex = cell.cellIndex;
     
-    //                 if (Game.getInstance().getBoard()[rowIndex][colIndex].getPiece()?.getColor() === this.color) {
-    //                  private   if (piece === undefined) {
-    //                         previousLocation = Game.getInstance().getBoard()[rowIndex][colIndex];
-    //                         piece = previousLocation.getPiece();
-    //                     } else {
-    //                         nextLocation = Game.getInstance().getBoard()[rowIndex][colIndex];
-    //                         // TODO: Set the actual piece
-    //                     }
-    //                 }
-    //             }
+//     //                 if (Game.getInstance().getBoard()[rowIndex][colIndex].getPiece()?.getColor() === this.color) {
+//     //                  private   if (piece === undefined) {
+//     //                         previousLocation = Game.getInstance().getBoard()[rowIndex][colIndex];
+//     //                         piece = previousLocation.getPiece();
+//     //                     } else {
+//     //                         nextLocation = Game.getInstance().getBoard()[rowIndex][colIndex];
+//     //                         // TODO: Set the actual piece
+//     //                     }
+//     //                 }
+//     //             }
     
-    //             resolve(new Play(piece as Piece, previousLocation as Square, nextLocation as Square));
-    //             document.getElementById("game")?.removeEventListener("click", clickHandler);
-    //         };
+//     //             resolve(new Play(piece as Piece, previousLocation as Square, nextLocation as Square));
+//     //             document.getElementById("game")?.removeEventListener("click", clickHandler);
+//     //         };
     
-    //         document.getElementById("game")?.addEventListener("click", clickHandler);
-    //     });
-    // }
+//     //         document.getElementById("game")?.addEventListener("click", clickHandler);
+//     //     });
+//     // }
     
 }
 class Game {
@@ -344,19 +344,29 @@ document.addEventListener("DOMContentLoaded", function() {
     let game: Game = Game.create(white, black);
     document.getElementById("start")?.addEventListener("click", function() {
         game.start();
+        // while(!game.isFinished()) {
+        //     let play: Play = game.play();
+        //     const table: HTMLTableElement = document.getElementById("game") as HTMLTableElement;
+        //     console.log(play);
+        //     let rowIndex: number = play.getPreviousLocation().getRow();
+        //     let colIndex: number = play.getPreviousLocation().getCol();
+        //     cell = table.rows[rowIndex].cells[colIndex];
+        //     const piece: string = cell.textContent;
+        //     rowIndex = play.getNextLocation().getRow();
+        //     colIndex = play.getNextLocation().getCol();
+        //     cell.textContent = "";
+        //     cell = table.rows[rowIndex].cells[colIndex];
+        //     cell.textContent = piece;
+        // }
         while(!game.isFinished()) {
-            let play: Play = game.play();
-            const table: HTMLTableElement = document.getElementById("game") as HTMLTableElement;
-            console.log(play);
-            let rowIndex: number = play.getPreviousLocation().getRow();
-            let colIndex: number = play.getPreviousLocation().getCol();
-            cell = table.rows[rowIndex].cells[colIndex];
-            const piece: string = cell.textContent;
-            rowIndex = play.getNextLocation().getRow();
-            colIndex = play.getNextLocation().getCol();
-            cell.textContent = "";
-            cell = table.rows[rowIndex].cells[colIndex];
-            cell.textContent = piece;
+            game.play();
+            let board: Square[][] = game.getBoard();
+            for(let i: number = 0; i < board.length; i++) {
+                let row: Square[] = board[i];
+                for(let j: number = 0; j < row.length; j++) {
+                    
+                }
+            }
         }
         // document.getElementById("game").addEventListener("click", (e) => {
         //     console.log("click detected");
