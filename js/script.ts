@@ -344,30 +344,33 @@ document.addEventListener("DOMContentLoaded", function() {
     let game: Game = Game.create(white, black);
     document.getElementById("start")?.addEventListener("click", function() {
         game.start();
-        // while(!game.isFinished()) {
-        //     let play: Play = game.play();
-        //     const table: HTMLTableElement = document.getElementById("game") as HTMLTableElement;
-        //     console.log(play);
-        //     let rowIndex: number = play.getPreviousLocation().getRow();
-        //     let colIndex: number = play.getPreviousLocation().getCol();
-        //     cell = table.rows[rowIndex].cells[colIndex];
-        //     const piece: string = cell.textContent;
-        //     rowIndex = play.getNextLocation().getRow();
-        //     colIndex = play.getNextLocation().getCol();
-        //     cell.textContent = "";
-        //     cell = table.rows[rowIndex].cells[colIndex];
-        //     cell.textContent = piece;
-        // }
         while(!game.isFinished()) {
-            game.play();
-            let board: Square[][] = game.getBoard();
-            for(let i: number = 0; i < board.length; i++) {
-                let row: Square[] = board[i];
-                for(let j: number = 0; j < row.length; j++) {
-                    
-                }
+            let play: Play = game.play();
+            const table: HTMLTableElement = document.getElementById("game") as HTMLTableElement;
+            console.log(play);
+            if(play === undefined) {
+                continue;
             }
+            let rowIndex: number = play.getPreviousLocation().getRow();
+            let colIndex: number = play.getPreviousLocation().getCol();
+            cell = table.rows[rowIndex].cells[colIndex];
+            const piece: string = cell.textContent;
+            rowIndex = play.getNextLocation().getRow();
+            colIndex = play.getNextLocation().getCol();
+            cell.textContent = "";
+            cell = table.rows[rowIndex].cells[colIndex];
+            cell.textContent = piece;
         }
+        // while(!game.isFinished()) {
+        //     game.play();
+        //     let board: Square[][] = game.getBoard();
+        //     for(let i: number = 0; i < board.length; i++) {
+        //         let row: Square[] = board[i];
+        //         for(let j: number = 0; j < row.length; j++) {
+                    
+        //         }
+        //     }
+        // }
         // document.getElementById("game").addEventListener("click", (e) => {
         //     console.log("click detected");
         //     let target = e.target as Node;
