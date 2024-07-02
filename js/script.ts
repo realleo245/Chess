@@ -1,4 +1,5 @@
-
+import { Color } from "./enums";
+import { SquareColor } from "./enums";
 class Square {
     /**
      * Represents the row
@@ -177,35 +178,69 @@ class Player {
             this.pieces.push(new Pawn(this.color, i));
         }
     }
-    public play(): Play {
-        let piece: unknown = undefined;
-        let cell: any = undefined;
-        let previousLocation: unknown = undefined;
-        let nextLocation: unknown = undefined;
-        document.getElementById("game")?.addEventListener("click", (e) => {
-            console.log("click detected");
-            let target = e.target as Node;
-            if(target && target.nodeName == "TD") {
-                cell = target as HTMLTableCellElement;
-                const row: HTMLTableRowElement = cell.parentElement as HTMLTableRowElement;
-                const rowIndex = row.rowIndex;
-                const colIndex = cell.cellIndex;
-                if(Game.getInstance().getBoard()[rowIndex][colIndex].getPiece()?.getColor() == this.color) {
-                    if(piece === undefined) {
-                        previousLocation = Game.getInstance().getBoard()[rowIndex][colIndex];
-                        piece = (previousLocation as Square).getPiece();
+    public async play(): Promise<{ piece: Piece | undefined; previousLocation: Square | undefined; nextLocation: Square | undefined }> {
+        let piece: Piece | undefined = undefined;
+        let cell: HTMLTableCellElement | undefined = undefined;
+        let previousLocation: Square | undefined = undefined;
+        let nextLocation: Square | undefined = undefined;
+    
+        const waitForClick = (): Promise<void> => {
+            return new Promise((resolve) => {
+                document.getElementById("game")?.addEventListener("click", (e) => {
+                    console.log("click detected");
+                    let target = e.target as Node;
+                    if (target && target.nodeName == "TD") {
+                        cell = target as HTMLTableCellElement;
+                        const row: HTMLTableRowElement = cell.parentElement as HTMLTableRowElement;
+                        const rowIndex = row.rowIndex;
+                        const colIndex = cell.cellIndex;
+                        if (Game.getInstance().getBoard()[rowIndex][colIndex].getPiece()?.getColor() == this.color) {
+                            if (piece === undefined) {
+                                previousLocation = Game.getInstance().getBoard()[rowIndex][colIndex];
+                                piece = (previousLocation as Square).getPiece();
+                            } else {
+                                nextLocation = Game.getInstance().getBoard()[rowIndex][colIndex];
+                                // TODO: Set the actual piece
+                            }
+                        }
                     }
-                    else {
-                        nextLocation = Game.getInstance().getBoard()[rowIndex][colIndex];
-                        //TODO: Set the actual piece
-                    }
-                }
-            }       
-        });  
-       
-        //const play: Play = await this.waitForPlay();
-        return new Play(piece as Piece, previousLocation as Square, nextLocation as Square);
+                    resolve();
+                });
+            });
+        };
+    
+        await waitForClick();
+        return { piece, previousLocation, nextLocation };
     }
+    
+    // public play(): Play {
+    //     let piece: unknown = undefined;
+    //     let cell: any = undefined;
+    //     let previousLocation: unknown = undefined;
+    //     let nextLocation: unknown = undefined;
+    //     document.getElementById("game")?.addEventListener("click", (e) => {
+    //         console.log("click detected");
+    //         let target = e.target as Node;
+    //         if(target && target.nodeName == "TD") {
+    //             cell = target as HTMLTableCellElement;
+    //             const row: HTMLTableRowElement = cell.parentElement as HTMLTableRowElement;
+    //             const rowIndex = row.rowIndex;
+    //             const colIndex = cell.cellIndex;
+    //             if(Game.getInstance().getBoard()[rowIndex][colIndex].getPiece()?.getColor() == this.color) {
+    //                 if(piece === undefined) {
+    //                     previousLocation = Game.getInstance().getBoard()[rowIndex][colIndex];
+    //                     piece = (previousLocation as Square).getPiece();
+    //                 }
+    //                 else {
+    //                     nextLocation = Game.getInstance().getBoard()[rowIndex][colIndex];
+    //                     //TODO: Set the actual piece
+    //                 }
+    //             }
+    //         }       
+    //     });  
+       
+    //     return new Play(piece as Piece, previousLocation as Square, nextLocation as Square);
+    // }
     // Assume you have a function to handle cell clicks
 //     public handleCellClick(cell: HTMLElement): Promise<Play> {
 //         return new Promise<Play>((resolve) => {
@@ -327,7 +362,7 @@ class Game {
         this.white.loadPieces();
         this.black.loadPieces();
     }
-    public play(): Play {
+    public play():  Promise<{ piece: Piece | undefined; previousLocation: Square | undefined; nextLocation: Square | undefined }> {
         return this.turn == Color.WHITE ? this.white.play() : this.black.play();
     }
     public isFinished(): boolean {
@@ -335,77 +370,135 @@ class Game {
         return false;
     }
 }
-// Placeholder
-document.addEventListener("DOMContentLoaded", function() {
-    //let piece = undefined;
+async function playGame() {
     let cell: any = undefined;
     let white: Player = new Player(Color.WHITE);
     let black: Player = new Player(Color.BLACK);
     let game: Game = Game.create(white, black);
-    document.getElementById("start")?.addEventListener("click", function() {
+    document.getElementById("start")?.addEventListener("click", async function() {
         game.start();
-        while(!game.isFinished()) {
-            let play: Play = game.play();
-            const table: HTMLTableElement = document.getElementById("game") as HTMLTableElement;
-            console.log(play);
-            if(play === undefined) {
+        while (!game.isFinished()) {
+            const playResult = await game.play();
+            // Shouldn't ever happen
+            if (playResult === undefined) {
+                console.log("No play made. Waiting for play");
                 continue;
             }
-            let rowIndex: number = play.getPreviousLocation().getRow();
-            let colIndex: number = play.getPreviousLocation().getCol();
+        
+            const { piece, previousLocation, nextLocation } = playResult;
+        
+            const table: HTMLTableElement = document.getElementById("game") as HTMLTableElement;
+            let rowIndex: number = previousLocation.getRow();
+            let colIndex: number = previousLocation.getCol();
             cell = table.rows[rowIndex].cells[colIndex];
-            const piece: string = cell.textContent;
-            rowIndex = play.getNextLocation().getRow();
-            colIndex = play.getNextLocation().getCol();
+            const pieceText: string = cell.textContent;
+        
+            rowIndex = nextLocation.getRow();
+            colIndex = nextLocation.getCol();
             cell.textContent = "";
             cell = table.rows[rowIndex].cells[colIndex];
-            cell.textContent = piece;
+            cell.textContent = pieceText;
         }
-        // while(!game.isFinished()) {
-        //     game.play();
-        //     let board: Square[][] = game.getBoard();
-        //     for(let i: number = 0; i < board.length; i++) {
-        //         let row: Square[] = board[i];
-        //         for(let j: number = 0; j < row.length; j++) {
-                    
-        //         }
-        //     }
-        // }
-        // document.getElementById("game").addEventListener("click", (e) => {
-        //     console.log("click detected");
-        //     let target = e.target as Node;
-        //     if(target && target.nodeName == "TD") {
-        //         if(piece === undefined) {
-        //             cell = target;
-        //             piece = cell.textContent;
-        //             cell.textContent = "";
-        //         }
-        //         else {
-        //             target.textContent = piece;
-        //             piece = undefined;
-        //         }
-        //     }          
-        // });  
-    }); 
-});// Placeholder
+    });  
+}
+document.addEventListener("DOMContentLoaded", function() {
+    playGame();
+});
+// // Placeholder
 // document.addEventListener("DOMContentLoaded", function() {
-//     let piece = undefined;
-//     let cell = undefined;
-//     document.getElementById("start").addEventListener("click", function() {
-//         document.getElementById("game").addEventListener("click", (e) => {
-//             console.log("click detected");
-//             let target = e.target as Node;
-//             if(target && target.nodeName == "TD") {
-//                 if(piece === undefined) {
-//                     cell = target;
-//                     piece = cell.textContent;
-//                     cell.textContent = "";
-//                 }
-//                 else {
-//                     target.textContent = piece;
-//                     piece = undefined;
-//                 }
-//             }          
-//         });  
-//     }); 
-// });
+// //     //let piece = undefined;
+// //     let cell: any = undefined;
+// //     let white: Player = new Player(Color.WHITE);
+// //     let black: Player = new Player(Color.BLACK);
+// //     let game: Game = Game.create(white, black);
+// //     document.getElementById("start")?.addEventListener("click", function() {
+// //         game.start();
+// //         while (!game.isFinished()) {
+// //             const playResult = await game.play();
+// //             if (playResult === undefined) {
+// //                 console.log("No play made. Waiting for play");
+// //                 continue;
+// //             }
+        
+// //             const { piece, previousLocation, nextLocation } = playResult;
+        
+// //             const table: HTMLTableElement = document.getElementById("game") as HTMLTableElement;
+// //             let rowIndex: number = previousLocation.getRow();
+// //             let colIndex: number = previousLocation.getCol();
+// //             cell = table.rows[rowIndex].cells[colIndex];
+// //             const pieceText: string = cell.textContent;
+        
+// //             rowIndex = nextLocation.getRow();
+// //             colIndex = nextLocation.getCol();
+// //             cell.textContent = "";
+// //             cell = table.rows[rowIndex].cells[colIndex];
+// //             cell.textContent = pieceText;
+// //         }
+        
+// //         // while(!game.isFinished()) {
+// //         //     let play: Promise<{ piece: Piece | undefined; previousLocation: Square | undefined; nextLocation: Square | undefined }> = game.play();
+// //         //     const table: HTMLTableElement = document.getElementById("game") as HTMLTableElement;
+// //         //     console.log(play);
+// //         //     if(play === undefined) {
+// //         //         console.log("No play made. Waiting for play");
+// //         //         continue;
+// //         //     }
+// //         //     let rowIndex: number = play.getPreviousLocation().getRow();
+// //         //     let colIndex: number = play.getPreviousLocation().getCol();
+// //         //     cell = table.rows[rowIndex].cells[colIndex];
+// //         //     const piece: string = cell.textContent;
+// //         //     rowIndex = play.getNextLocation().getRow();
+// //         //     colIndex = play.getNextLocation().getCol();
+// //         //     cell.textContent = "";
+// //         //     cell = table.rows[rowIndex].cells[colIndex];
+// //         //     cell.textContent = piece;
+// //         // }
+// //         // while(!game.isFinished()) {
+// //         //     game.play();
+// //         //     let board: Square[][] = game.getBoard();
+// //         //     for(let i: number = 0; i < board.length; i++) {
+// //         //         let row: Square[] = board[i];
+// //         //         for(let j: number = 0; j < row.length; j++) {
+                    
+// //         //         }
+// //         //     }
+// //         // }
+// //         // document.getElementById("game").addEventListener("click", (e) => {
+// //         //     console.log("click detected");
+// //         //     let target = e.target as Node;
+// //         //     if(target && target.nodeName == "TD") {
+// //         //         if(piece === undefined) {
+// //         //             cell = target;
+// //         //             piece = cell.textContent;
+// //         //             cell.textContent = "";
+// //         //         }
+// //         //         else {
+// //         //             target.textContent = piece;
+// //         //             piece = undefined;
+// //         //         }
+// //         //     }          
+// //         // });  
+// //     }); 
+// // });// Placeholder
+// // // document.addEventListener("DOMContentLoaded", function() {
+// // //     let piece = undefined;
+// // //     let cell = undefined;
+// // //     document.getElementById("start").addEventListener("click", function() {
+// // //         document.getElementById("game").addEventListener("click", (e) => {
+// // //             console.log("click detected");
+// // //             let target = e.target as Node;
+// // //             if(target && target.nodeName == "TD") {
+// // //                 if(piece === undefined) {
+// // //                     cell = target;
+// // //                     piece = cell.textContent;
+// // //                     cell.textContent = "";
+// // //                 }
+// // //                 else {
+// // //                     target.textContent = piece;
+// // //                     piece = undefined;
+// // //                 }
+// // //             }          
+// // //         });  
+// // //     }); 
+// // // });
+// }

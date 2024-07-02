@@ -1,3 +1,4 @@
+"use strict";
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = function (d, b) {
         extendStatics = Object.setPrototypeOf ||
@@ -13,6 +14,44 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+var __generator = (this && this.__generator) || function (thisArg, body) {
+    var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;
+    return g = { next: verb(0), "throw": verb(1), "return": verb(2) }, typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
+    function verb(n) { return function (v) { return step([n, v]); }; }
+    function step(op) {
+        if (f) throw new TypeError("Generator is already executing.");
+        while (g && (g = 0, op[0] && (_ = 0)), _) try {
+            if (f = 1, y && (t = op[0] & 2 ? y["return"] : op[0] ? y["throw"] || ((t = y["return"]) && t.call(y), 0) : y.next) && !(t = t.call(y, op[1])).done) return t;
+            if (y = 0, t) op = [op[0] & 2, t.value];
+            switch (op[0]) {
+                case 0: case 1: t = op; break;
+                case 4: _.label++; return { value: op[1], done: false };
+                case 5: _.label++; y = op[1]; op = [0]; continue;
+                case 7: op = _.ops.pop(); _.trys.pop(); continue;
+                default:
+                    if (!(t = _.trys, t = t.length > 0 && t[t.length - 1]) && (op[0] === 6 || op[0] === 2)) { _ = 0; continue; }
+                    if (op[0] === 3 && (!t || (op[1] > t[0] && op[1] < t[3]))) { _.label = op[1]; break; }
+                    if (op[0] === 6 && _.label < t[1]) { _.label = t[1]; t = op; break; }
+                    if (t && _.label < t[2]) { _.label = t[2]; _.ops.push(op); break; }
+                    if (t[2]) _.ops.pop();
+                    _.trys.pop(); continue;
+            }
+            op = body.call(thisArg, _);
+        } catch (e) { op = [6, e]; y = 0; } finally { f = t = 0; }
+        if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
+    }
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+var enums_1 = require("./enums");
 var Square = /** @class */ (function () {
     /**
      * Creates a new Square object
@@ -72,8 +111,8 @@ var Bishop = /** @class */ (function (_super) {
     __extends(Bishop, _super);
     function Bishop(color, squareColor) {
         var _this = this;
-        color == Color.WHITE ? (squareColor == SquareColor.LIGHT ? _this = _super.call(this, color, 7, 5) || this : _this = _super.call(this, color, 7, 2) || this)
-            : (squareColor == SquareColor.LIGHT ? _this = _super.call(this, color, 0, 2) || this : _this = _super.call(this, color, 0, 5) || this);
+        color == 0 /* Color.WHITE */ ? (squareColor == enums_1.SquareColor.LIGHT ? _this = _super.call(this, color, 7, 5) || this : _this = _super.call(this, color, 7, 2) || this)
+            : (squareColor == enums_1.SquareColor.LIGHT ? _this = _super.call(this, color, 0, 2) || this : _this = _super.call(this, color, 0, 5) || this);
         return _this;
     }
     Bishop.prototype.getAllLegalMoves = function () {
@@ -86,7 +125,7 @@ var King = /** @class */ (function (_super) {
     __extends(King, _super);
     function King(color) {
         var _this = this;
-        color == Color.WHITE ? _this = _super.call(this, color, 7, 3) || this : _this = _super.call(this, color, 3, 0) || this;
+        color == 0 /* Color.WHITE */ ? _this = _super.call(this, color, 7, 3) || this : _this = _super.call(this, color, 3, 0) || this;
         return _this;
     }
     King.prototype.getAllLegalMoves = function () {
@@ -99,8 +138,8 @@ var Knight = /** @class */ (function (_super) {
     __extends(Knight, _super);
     function Knight(color, squareColor) {
         var _this = this;
-        color == Color.WHITE ? (squareColor == SquareColor.LIGHT ? _this = _super.call(this, color, 7, 1) || this : _this = _super.call(this, color, 7, 6) || this)
-            : (squareColor == SquareColor.LIGHT ? _this = _super.call(this, color, 0, 6) || this : _this = _super.call(this, color, 0, 2) || this);
+        color == 0 /* Color.WHITE */ ? (squareColor == enums_1.SquareColor.LIGHT ? _this = _super.call(this, color, 7, 1) || this : _this = _super.call(this, color, 7, 6) || this)
+            : (squareColor == enums_1.SquareColor.LIGHT ? _this = _super.call(this, color, 0, 6) || this : _this = _super.call(this, color, 0, 2) || this);
         return _this;
     }
     Knight.prototype.getAllLegalMoves = function () {
@@ -112,7 +151,7 @@ var Queen = /** @class */ (function (_super) {
     __extends(Queen, _super);
     function Queen(color) {
         var _this = this;
-        color == Color.WHITE ? _this = _super.call(this, color, 7, 4) || this : _this = _super.call(this, color, 0, 4) || this;
+        color == 0 /* Color.WHITE */ ? _this = _super.call(this, color, 7, 4) || this : _this = _super.call(this, color, 0, 4) || this;
         return _this;
     }
     Queen.prototype.getAllLegalMoves = function () {
@@ -124,7 +163,7 @@ var Pawn = /** @class */ (function (_super) {
     __extends(Pawn, _super);
     function Pawn(color, position) {
         var _this = this;
-        color == Color.WHITE ? _this = _super.call(this, color, 6, position) || this : _this = _super.call(this, color, 1, position) || this;
+        color == 0 /* Color.WHITE */ ? _this = _super.call(this, color, 6, position) || this : _this = _super.call(this, color, 1, position) || this;
         return _this;
     }
     Pawn.prototype.getAllLegalMoves = function () {
@@ -136,8 +175,8 @@ var Rook = /** @class */ (function (_super) {
     __extends(Rook, _super);
     function Rook(color, squareColor) {
         var _this = this;
-        color == Color.WHITE ? (squareColor == SquareColor.LIGHT ? _this = _super.call(this, color, 7, 7) || this : _this = _super.call(this, color, 7, 0) || this)
-            : (squareColor == SquareColor.LIGHT ? _this = _super.call(this, color, 0, 0) || this : _this = _super.call(this, color, 0, 7) || this);
+        color == 0 /* Color.WHITE */ ? (squareColor == enums_1.SquareColor.LIGHT ? _this = _super.call(this, color, 7, 7) || this : _this = _super.call(this, color, 7, 0) || this)
+            : (squareColor == enums_1.SquareColor.LIGHT ? _this = _super.call(this, color, 0, 0) || this : _this = _super.call(this, color, 0, 7) || this);
         return _this;
     }
     Rook.prototype.getAllLegalMoves = function () {
@@ -186,43 +225,58 @@ var Player = /** @class */ (function () {
     Player.prototype.loadPieces = function () {
         this.pieces.push(new King(this.color));
         this.pieces.push(new Queen(this.color));
-        this.pieces.push(new Rook(this.color, SquareColor.LIGHT), new Rook(this.color, SquareColor.DARK));
-        this.pieces.push(new Knight(this.color, SquareColor.LIGHT), new Knight(this.color, SquareColor.DARK));
-        this.pieces.push(new Bishop(this.color, SquareColor.LIGHT), new Bishop(this.color, SquareColor.DARK));
+        this.pieces.push(new Rook(this.color, enums_1.SquareColor.LIGHT), new Rook(this.color, enums_1.SquareColor.DARK));
+        this.pieces.push(new Knight(this.color, enums_1.SquareColor.LIGHT), new Knight(this.color, enums_1.SquareColor.DARK));
+        this.pieces.push(new Bishop(this.color, enums_1.SquareColor.LIGHT), new Bishop(this.color, enums_1.SquareColor.DARK));
         for (var i = 0; i < 8; i++) {
             this.pieces.push(new Pawn(this.color, i));
         }
     };
     Player.prototype.play = function () {
-        var _this = this;
-        var _a;
-        var piece = undefined;
-        var cell = undefined;
-        var previousLocation = undefined;
-        var nextLocation = undefined;
-        (_a = document.getElementById("game")) === null || _a === void 0 ? void 0 : _a.addEventListener("click", function (e) {
-            var _a;
-            console.log("click detected");
-            var target = e.target;
-            if (target && target.nodeName == "TD") {
-                cell = target;
-                var row = cell.parentElement;
-                var rowIndex = row.rowIndex;
-                var colIndex = cell.cellIndex;
-                if (((_a = Game.getInstance().getBoard()[rowIndex][colIndex].getPiece()) === null || _a === void 0 ? void 0 : _a.getColor()) == _this.color) {
-                    if (piece === undefined) {
-                        previousLocation = Game.getInstance().getBoard()[rowIndex][colIndex];
-                        piece = previousLocation.getPiece();
-                    }
-                    else {
-                        nextLocation = Game.getInstance().getBoard()[rowIndex][colIndex];
-                        //TODO: Set the actual piece
-                    }
+        return __awaiter(this, void 0, void 0, function () {
+            var piece, cell, previousLocation, nextLocation, waitForClick;
+            var _this = this;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        piece = undefined;
+                        cell = undefined;
+                        previousLocation = undefined;
+                        nextLocation = undefined;
+                        waitForClick = function () {
+                            return new Promise(function (resolve) {
+                                var _a;
+                                (_a = document.getElementById("game")) === null || _a === void 0 ? void 0 : _a.addEventListener("click", function (e) {
+                                    var _a;
+                                    console.log("click detected");
+                                    var target = e.target;
+                                    if (target && target.nodeName == "TD") {
+                                        cell = target;
+                                        var row = cell.parentElement;
+                                        var rowIndex = row.rowIndex;
+                                        var colIndex = cell.cellIndex;
+                                        if (((_a = Game.getInstance().getBoard()[rowIndex][colIndex].getPiece()) === null || _a === void 0 ? void 0 : _a.getColor()) == _this.color) {
+                                            if (piece === undefined) {
+                                                previousLocation = Game.getInstance().getBoard()[rowIndex][colIndex];
+                                                piece = previousLocation.getPiece();
+                                            }
+                                            else {
+                                                nextLocation = Game.getInstance().getBoard()[rowIndex][colIndex];
+                                                // TODO: Set the actual piece
+                                            }
+                                        }
+                                    }
+                                    resolve();
+                                });
+                            });
+                        };
+                        return [4 /*yield*/, waitForClick()];
+                    case 1:
+                        _a.sent();
+                        return [2 /*return*/, { piece: piece, previousLocation: previousLocation, nextLocation: nextLocation }];
                 }
-            }
+            });
         });
-        //const play: Play = await this.waitForPlay();
-        return new Play(piece, previousLocation, nextLocation);
     };
     return Player;
 }());
@@ -256,12 +310,12 @@ var Game = /** @class */ (function () {
     };
     Game.prototype.start = function () {
         console.log("Game begun");
-        this.turn = Color.WHITE;
+        this.turn = 0 /* Color.WHITE */;
         this.white.loadPieces();
         this.black.loadPieces();
     };
     Game.prototype.play = function () {
-        return this.turn == Color.WHITE ? this.white.play() : this.black.play();
+        return this.turn == 0 /* Color.WHITE */ ? this.white.play() : this.black.play();
     };
     Game.prototype.isFinished = function () {
         //TODO: Actually write it
@@ -269,77 +323,147 @@ var Game = /** @class */ (function () {
     };
     return Game;
 }());
-// Placeholder
-document.addEventListener("DOMContentLoaded", function () {
-    var _a;
-    //let piece = undefined;
-    var cell = undefined;
-    var white = new Player(Color.WHITE);
-    var black = new Player(Color.BLACK);
-    var game = Game.create(white, black);
-    (_a = document.getElementById("start")) === null || _a === void 0 ? void 0 : _a.addEventListener("click", function () {
-        game.start();
-        while (!game.isFinished()) {
-            var play = game.play();
-            var table = document.getElementById("game");
-            console.log(play);
-            if (play === undefined) {
-                continue;
-            }
-            var rowIndex = play.getPreviousLocation().getRow();
-            var colIndex = play.getPreviousLocation().getCol();
-            cell = table.rows[rowIndex].cells[colIndex];
-            var piece = cell.textContent;
-            rowIndex = play.getNextLocation().getRow();
-            colIndex = play.getNextLocation().getCol();
-            cell.textContent = "";
-            cell = table.rows[rowIndex].cells[colIndex];
-            cell.textContent = piece;
-        }
-        // while(!game.isFinished()) {
-        //     game.play();
-        //     let board: Square[][] = game.getBoard();
-        //     for(let i: number = 0; i < board.length; i++) {
-        //         let row: Square[] = board[i];
-        //         for(let j: number = 0; j < row.length; j++) {
-        //         }
-        //     }
-        // }
-        // document.getElementById("game").addEventListener("click", (e) => {
-        //     console.log("click detected");
-        //     let target = e.target as Node;
-        //     if(target && target.nodeName == "TD") {
-        //         if(piece === undefined) {
-        //             cell = target;
-        //             piece = cell.textContent;
-        //             cell.textContent = "";
-        //         }
-        //         else {
-        //             target.textContent = piece;
-        //             piece = undefined;
-        //         }
-        //     }          
-        // });  
+function playGame() {
+    return __awaiter(this, void 0, void 0, function () {
+        var cell, white, black, game;
+        var _a;
+        return __generator(this, function (_b) {
+            cell = undefined;
+            white = new Player(0 /* Color.WHITE */);
+            black = new Player(1 /* Color.BLACK */);
+            game = Game.create(white, black);
+            (_a = document.getElementById("start")) === null || _a === void 0 ? void 0 : _a.addEventListener("click", function () {
+                return __awaiter(this, void 0, void 0, function () {
+                    var playResult, piece, previousLocation, nextLocation, table, rowIndex, colIndex, pieceText;
+                    return __generator(this, function (_a) {
+                        switch (_a.label) {
+                            case 0:
+                                game.start();
+                                _a.label = 1;
+                            case 1:
+                                if (!!game.isFinished()) return [3 /*break*/, 3];
+                                return [4 /*yield*/, game.play()];
+                            case 2:
+                                playResult = _a.sent();
+                                // Shouldn't ever happen
+                                if (playResult === undefined) {
+                                    console.log("No play made. Waiting for play");
+                                    return [3 /*break*/, 1];
+                                }
+                                piece = playResult.piece, previousLocation = playResult.previousLocation, nextLocation = playResult.nextLocation;
+                                table = document.getElementById("game");
+                                rowIndex = previousLocation.getRow();
+                                colIndex = previousLocation.getCol();
+                                cell = table.rows[rowIndex].cells[colIndex];
+                                pieceText = cell.textContent;
+                                rowIndex = nextLocation.getRow();
+                                colIndex = nextLocation.getCol();
+                                cell.textContent = "";
+                                cell = table.rows[rowIndex].cells[colIndex];
+                                cell.textContent = pieceText;
+                                return [3 /*break*/, 1];
+                            case 3: return [2 /*return*/];
+                        }
+                    });
+                });
+            });
+            return [2 /*return*/];
+        });
     });
-}); // Placeholder
+}
+document.addEventListener("DOMContentLoaded", function () {
+    playGame();
+});
+// // Placeholder
 // document.addEventListener("DOMContentLoaded", function() {
-//     let piece = undefined;
-//     let cell = undefined;
-//     document.getElementById("start").addEventListener("click", function() {
-//         document.getElementById("game").addEventListener("click", (e) => {
-//             console.log("click detected");
-//             let target = e.target as Node;
-//             if(target && target.nodeName == "TD") {
-//                 if(piece === undefined) {
-//                     cell = target;
-//                     piece = cell.textContent;
-//                     cell.textContent = "";
-//                 }
-//                 else {
-//                     target.textContent = piece;
-//                     piece = undefined;
-//                 }
-//             }          
-//         });  
-//     }); 
-// });
+// //     //let piece = undefined;
+// //     let cell: any = undefined;
+// //     let white: Player = new Player(Color.WHITE);
+// //     let black: Player = new Player(Color.BLACK);
+// //     let game: Game = Game.create(white, black);
+// //     document.getElementById("start")?.addEventListener("click", function() {
+// //         game.start();
+// //         while (!game.isFinished()) {
+// //             const playResult = await game.play();
+// //             if (playResult === undefined) {
+// //                 console.log("No play made. Waiting for play");
+// //                 continue;
+// //             }
+// //             const { piece, previousLocation, nextLocation } = playResult;
+// //             const table: HTMLTableElement = document.getElementById("game") as HTMLTableElement;
+// //             let rowIndex: number = previousLocation.getRow();
+// //             let colIndex: number = previousLocation.getCol();
+// //             cell = table.rows[rowIndex].cells[colIndex];
+// //             const pieceText: string = cell.textContent;
+// //             rowIndex = nextLocation.getRow();
+// //             colIndex = nextLocation.getCol();
+// //             cell.textContent = "";
+// //             cell = table.rows[rowIndex].cells[colIndex];
+// //             cell.textContent = pieceText;
+// //         }
+// //         // while(!game.isFinished()) {
+// //         //     let play: Promise<{ piece: Piece | undefined; previousLocation: Square | undefined; nextLocation: Square | undefined }> = game.play();
+// //         //     const table: HTMLTableElement = document.getElementById("game") as HTMLTableElement;
+// //         //     console.log(play);
+// //         //     if(play === undefined) {
+// //         //         console.log("No play made. Waiting for play");
+// //         //         continue;
+// //         //     }
+// //         //     let rowIndex: number = play.getPreviousLocation().getRow();
+// //         //     let colIndex: number = play.getPreviousLocation().getCol();
+// //         //     cell = table.rows[rowIndex].cells[colIndex];
+// //         //     const piece: string = cell.textContent;
+// //         //     rowIndex = play.getNextLocation().getRow();
+// //         //     colIndex = play.getNextLocation().getCol();
+// //         //     cell.textContent = "";
+// //         //     cell = table.rows[rowIndex].cells[colIndex];
+// //         //     cell.textContent = piece;
+// //         // }
+// //         // while(!game.isFinished()) {
+// //         //     game.play();
+// //         //     let board: Square[][] = game.getBoard();
+// //         //     for(let i: number = 0; i < board.length; i++) {
+// //         //         let row: Square[] = board[i];
+// //         //         for(let j: number = 0; j < row.length; j++) {
+// //         //         }
+// //         //     }
+// //         // }
+// //         // document.getElementById("game").addEventListener("click", (e) => {
+// //         //     console.log("click detected");
+// //         //     let target = e.target as Node;
+// //         //     if(target && target.nodeName == "TD") {
+// //         //         if(piece === undefined) {
+// //         //             cell = target;
+// //         //             piece = cell.textContent;
+// //         //             cell.textContent = "";
+// //         //         }
+// //         //         else {
+// //         //             target.textContent = piece;
+// //         //             piece = undefined;
+// //         //         }
+// //         //     }          
+// //         // });  
+// //     }); 
+// // });// Placeholder
+// // // document.addEventListener("DOMContentLoaded", function() {
+// // //     let piece = undefined;
+// // //     let cell = undefined;
+// // //     document.getElementById("start").addEventListener("click", function() {
+// // //         document.getElementById("game").addEventListener("click", (e) => {
+// // //             console.log("click detected");
+// // //             let target = e.target as Node;
+// // //             if(target && target.nodeName == "TD") {
+// // //                 if(piece === undefined) {
+// // //                     cell = target;
+// // //                     piece = cell.textContent;
+// // //                     cell.textContent = "";
+// // //                 }
+// // //                 else {
+// // //                     target.textContent = piece;
+// // //                     piece = undefined;
+// // //                 }
+// // //             }          
+// // //         });  
+// // //     }); 
+// // // });
+// }
