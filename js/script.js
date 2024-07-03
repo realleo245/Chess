@@ -52,6 +52,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var enums_1 = require("./enums");
+var enums_2 = require("./enums");
 var Square = /** @class */ (function () {
     /**
      * Creates a new Square object
@@ -111,8 +112,8 @@ var Bishop = /** @class */ (function (_super) {
     __extends(Bishop, _super);
     function Bishop(color, squareColor) {
         var _this = this;
-        color == 0 /* Color.WHITE */ ? (squareColor == enums_1.SquareColor.LIGHT ? _this = _super.call(this, color, 7, 5) || this : _this = _super.call(this, color, 7, 2) || this)
-            : (squareColor == enums_1.SquareColor.LIGHT ? _this = _super.call(this, color, 0, 2) || this : _this = _super.call(this, color, 0, 5) || this);
+        color == enums_1.Color.WHITE ? (squareColor == enums_2.SquareColor.LIGHT ? _this = _super.call(this, color, 7, 5) || this : _this = _super.call(this, color, 7, 2) || this)
+            : (squareColor == enums_2.SquareColor.LIGHT ? _this = _super.call(this, color, 0, 2) || this : _this = _super.call(this, color, 0, 5) || this);
         return _this;
     }
     Bishop.prototype.getAllLegalMoves = function () {
@@ -125,7 +126,7 @@ var King = /** @class */ (function (_super) {
     __extends(King, _super);
     function King(color) {
         var _this = this;
-        color == 0 /* Color.WHITE */ ? _this = _super.call(this, color, 7, 3) || this : _this = _super.call(this, color, 3, 0) || this;
+        color == enums_1.Color.WHITE ? _this = _super.call(this, color, 7, 3) || this : _this = _super.call(this, color, 3, 0) || this;
         return _this;
     }
     King.prototype.getAllLegalMoves = function () {
@@ -138,8 +139,8 @@ var Knight = /** @class */ (function (_super) {
     __extends(Knight, _super);
     function Knight(color, squareColor) {
         var _this = this;
-        color == 0 /* Color.WHITE */ ? (squareColor == enums_1.SquareColor.LIGHT ? _this = _super.call(this, color, 7, 1) || this : _this = _super.call(this, color, 7, 6) || this)
-            : (squareColor == enums_1.SquareColor.LIGHT ? _this = _super.call(this, color, 0, 6) || this : _this = _super.call(this, color, 0, 2) || this);
+        color == enums_1.Color.WHITE ? (squareColor == enums_2.SquareColor.LIGHT ? _this = _super.call(this, color, 7, 1) || this : _this = _super.call(this, color, 7, 6) || this)
+            : (squareColor == enums_2.SquareColor.LIGHT ? _this = _super.call(this, color, 0, 6) || this : _this = _super.call(this, color, 0, 2) || this);
         return _this;
     }
     Knight.prototype.getAllLegalMoves = function () {
@@ -151,7 +152,7 @@ var Queen = /** @class */ (function (_super) {
     __extends(Queen, _super);
     function Queen(color) {
         var _this = this;
-        color == 0 /* Color.WHITE */ ? _this = _super.call(this, color, 7, 4) || this : _this = _super.call(this, color, 0, 4) || this;
+        color == enums_1.Color.WHITE ? _this = _super.call(this, color, 7, 4) || this : _this = _super.call(this, color, 0, 4) || this;
         return _this;
     }
     Queen.prototype.getAllLegalMoves = function () {
@@ -163,7 +164,7 @@ var Pawn = /** @class */ (function (_super) {
     __extends(Pawn, _super);
     function Pawn(color, position) {
         var _this = this;
-        color == 0 /* Color.WHITE */ ? _this = _super.call(this, color, 6, position) || this : _this = _super.call(this, color, 1, position) || this;
+        color == enums_1.Color.WHITE ? _this = _super.call(this, color, 6, position) || this : _this = _super.call(this, color, 1, position) || this;
         return _this;
     }
     Pawn.prototype.getAllLegalMoves = function () {
@@ -175,8 +176,8 @@ var Rook = /** @class */ (function (_super) {
     __extends(Rook, _super);
     function Rook(color, squareColor) {
         var _this = this;
-        color == 0 /* Color.WHITE */ ? (squareColor == enums_1.SquareColor.LIGHT ? _this = _super.call(this, color, 7, 7) || this : _this = _super.call(this, color, 7, 0) || this)
-            : (squareColor == enums_1.SquareColor.LIGHT ? _this = _super.call(this, color, 0, 0) || this : _this = _super.call(this, color, 0, 7) || this);
+        color == enums_1.Color.WHITE ? (squareColor == enums_2.SquareColor.LIGHT ? _this = _super.call(this, color, 7, 7) || this : _this = _super.call(this, color, 7, 0) || this)
+            : (squareColor == enums_2.SquareColor.LIGHT ? _this = _super.call(this, color, 0, 0) || this : _this = _super.call(this, color, 0, 7) || this);
         return _this;
     }
     Rook.prototype.getAllLegalMoves = function () {
@@ -225,9 +226,9 @@ var Player = /** @class */ (function () {
     Player.prototype.loadPieces = function () {
         this.pieces.push(new King(this.color));
         this.pieces.push(new Queen(this.color));
-        this.pieces.push(new Rook(this.color, enums_1.SquareColor.LIGHT), new Rook(this.color, enums_1.SquareColor.DARK));
-        this.pieces.push(new Knight(this.color, enums_1.SquareColor.LIGHT), new Knight(this.color, enums_1.SquareColor.DARK));
-        this.pieces.push(new Bishop(this.color, enums_1.SquareColor.LIGHT), new Bishop(this.color, enums_1.SquareColor.DARK));
+        this.pieces.push(new Rook(this.color, enums_2.SquareColor.LIGHT), new Rook(this.color, enums_2.SquareColor.DARK));
+        this.pieces.push(new Knight(this.color, enums_2.SquareColor.LIGHT), new Knight(this.color, enums_2.SquareColor.DARK));
+        this.pieces.push(new Bishop(this.color, enums_2.SquareColor.LIGHT), new Bishop(this.color, enums_2.SquareColor.DARK));
         for (var i = 0; i < 8; i++) {
             this.pieces.push(new Pawn(this.color, i));
         }
@@ -310,12 +311,12 @@ var Game = /** @class */ (function () {
     };
     Game.prototype.start = function () {
         console.log("Game begun");
-        this.turn = 0 /* Color.WHITE */;
+        this.turn = enums_1.Color.WHITE;
         this.white.loadPieces();
         this.black.loadPieces();
     };
     Game.prototype.play = function () {
-        return this.turn == 0 /* Color.WHITE */ ? this.white.play() : this.black.play();
+        return this.turn == enums_1.Color.WHITE ? this.white.play() : this.black.play();
     };
     Game.prototype.isFinished = function () {
         //TODO: Actually write it
@@ -329,8 +330,8 @@ function playGame() {
         var _a;
         return __generator(this, function (_b) {
             cell = undefined;
-            white = new Player(0 /* Color.WHITE */);
-            black = new Player(1 /* Color.BLACK */);
+            white = new Player(enums_1.Color.WHITE);
+            black = new Player(enums_1.Color.BLACK);
             game = Game.create(white, black);
             (_a = document.getElementById("start")) === null || _a === void 0 ? void 0 : _a.addEventListener("click", function () {
                 return __awaiter(this, void 0, void 0, function () {
